@@ -6,6 +6,7 @@ import manager_operating_hours, accessor_operating_hours
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
+
 class OperationHoursManagerTests(unittest.TestCase):
     def test_matches_ShouldReturnRestaurants_WhenValidDateTime(self):
         test_manager = manager_operating_hours.Manager()

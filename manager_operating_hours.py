@@ -3,8 +3,6 @@ import engine_convert
 import accessor_operating_hours
 
 
-# import operating_hours_accessor
-
 class Manager:
 
     def __init__(self):
@@ -14,7 +12,6 @@ class Manager:
         if date_time_text is None:
             raise ValueError("Datetime not given")
 
-        dow = ""
         try:
             datestamp = parser.parse(date_time_text)
             dow = datestamp.strftime('%a')
@@ -22,8 +19,8 @@ class Manager:
             restaurants = self.Accessor.matches(dow, timestamp)
             return restaurants
 
-        except:
-            raise ValueError("Given date is invalid")
+        except Exception as err:
+            raise ValueError(f"Given date is invalid, {err}")
 
     def ingest_new_data_source(self, filename):
         """

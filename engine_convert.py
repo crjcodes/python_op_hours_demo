@@ -91,11 +91,10 @@ def parse_dow_text(section):
     section = re.sub(r'\s+', "", section)
 
     # disconnected days
-    firstBreak = section.split(",")
-    for f in firstBreak:
+    first_break = section.split(",")
+    for f in first_break:
         second_break = f.split("-")
         start_dow = second_break[0].strip()[0:3]
-
         if start_dow not in dow_full:
             continue
 
@@ -105,7 +104,6 @@ def parse_dow_text(section):
             dow_list.append(f.strip())
         else:
             end_dow = second_break[1].strip()[0:3]
-
             if end_dow not in dow_full:
                 continue
 

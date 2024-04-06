@@ -1,5 +1,4 @@
 import sys, logging
-import manager_operating_hours
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
