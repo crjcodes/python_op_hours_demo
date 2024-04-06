@@ -19,7 +19,7 @@ try:
 
         try:
             response_data = manager.list_operating_restaurants(datetime)
-            response = json.dumps(response_data)
+            response = json.dumps(response_data, indent=4, sort_keys=True)
             return Response(
                 response,
                 200, mimetype='application/json')

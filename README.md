@@ -63,6 +63,13 @@ Containerize the above via Docker
 1. Use python and the python standard library
 1. This solution must include testing (of course! Here to be checked off)
 
+## Screenshots of Results
+
+- ![Screenshot of successful query](result_success.png)
+- ![Screenshot of default response](result_default.png)
+- ![Screenshot of no results](result_no_result.png)
+- ![Screenshot of invalid datestamp](invalid_datestamp.png)
+
 ## Architecture/Design/Approach
 
 This example solution is using, loosely, the IDesign software methodology.  For more information, see _Righting Software_.
