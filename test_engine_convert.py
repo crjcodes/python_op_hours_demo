@@ -50,7 +50,6 @@ class EngineConvertTests(unittest.TestCase):
     # endregion
 
     # region parse_dow_text
-    # TODO: break apart into test cases with parameterized test data
     def test_parse_dow_text_ShouldReturnExpectedListofDaysOfWeek_WhenGivenBadData(self):
         testData = "Mon-Thu, TBD "
         result = engine_convert.parse_dow_text(testData)
@@ -93,22 +92,35 @@ class EngineConvertTests(unittest.TestCase):
         self.assertIsNone(engine_convert.parse_op_hours(None))
         return
 
-    def test_parse_op_hours_ShouldReturnJson_WhenValidParsedTime(self):
+    def test_parse_op_hours_ShouldReturnDict_WhenValidParsedTime(self):
         result = engine_convert.parse_op_hours("\"Mon-Fri, Sat 11 am - 12 pm  / Sun 11 am - 10 pm\"")
         self.assertTrue("Mon" in result.keys())
         self.assertTrue("Thu" in result.keys())
         self.assertTrue("Sat" in result.keys())
         self.assertTrue("Sun" in result.keys())
         self.assertEqual("11:00", result["Mon"].start)
+        self.assertEqual("11:00", result["Sun"].start)
+        self.assertEqual("22:00", result["Sun"].end)
 
-        return
+    def test_parse_op_hours_ShouldReturnExpectedListofDaysOfWeek_WhenGivenComplexData(self):
+        test_data = "\"Tues-Fri, Sun 11:30 am - 10 pm  / Sat 5:30 pm - 11 pm\""
+        result = engine_convert.parse_op_hours(test_data)
+
+        self.assertIsNotNone(result)
+        self.assertFalse("Mon" in result.keys())
+        self.assertTrue("Tue" in result.keys())
+        self.assertTrue("Fri" in result.keys())
+        self.assertTrue("Sat" in result.keys())
+        self.assertTrue("Sun" in result.keys())
+        self.assertEqual("11:30", result["Sun"].start)
+        self.assertEqual("23:00", result["Sat"].end)
 
     # endregion
 
     # region parse_time
     def test_parse_time_ShouldReturnFormattedTime_WhenGivenARangeofFormattedTimestamp(self):
-        testData = ["11am", "11:30 am", "1 pm", "9:30 pm", "5:30pm"]
-        expectedResult = ["11:00", "11:30", "13:00", "21:30", "17:30"]
+        testData = ["11am", "11:30 am", "1 pm", "9:30 pm", "5:30pm", " 12 pm  ", "11:53 pm"]
+        expectedResult = ["11:00", "11:30", "13:00", "21:30", "17:30", "12:00", "23:53"]
 
         i = 0
         for t in testData:

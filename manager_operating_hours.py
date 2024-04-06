@@ -1,5 +1,4 @@
-import string
-from datetime import datetime
+from dateutil import parser
 import engine_convert
 import accessor_operating_hours
 
@@ -17,8 +16,8 @@ class Manager:
 
         dow = ""
         try:
-            datestamp = datetime.strptime(date_time_text, '%m/%d/%y %H:%M:%S')
-            dow = datestamp.weekday()
+            datestamp = parser.parse(date_time_text)
+            dow = datestamp.strftime('%a')
             timestamp = datestamp.time()
             restaurants = self.Accessor.matches(dow, timestamp)
             return restaurants

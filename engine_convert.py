@@ -1,6 +1,5 @@
 import logging, sys, csv
-import datetime, dateutil.parser
-import re, json
+import dateutil.parser, re
 
 from model_operating_hours import OperatingHours
 
@@ -28,8 +27,7 @@ def ConvertFrom(filename):
             parsed_op_hours = parse_op_hours(in_hours)
             internal_data[restaurant_name] = parsed_op_hours
 
-    to_json = json.dumps(internal_data, indent=4, sort_keys=True, default=str)
-    return to_json
+    return internal_data
 
 
 def parse_op_hours(human_readable_op_hours):
@@ -47,17 +45,16 @@ def parse_op_hours(human_readable_op_hours):
     op_hours_per_day = {}
 
     for section in sections:
-
-        # Parse from input data
-
         section, close_time_text = parse_last_time_text(section)
         section, open_time_text = parse_last_time_text(section)
+        open_time = parse_time(open_time_text)
+        close_time = parse_time(close_time_text)
 
-        # Convert to non-primitive types
-        for dow in parse_dow_text(section):
-            open_time = parse_time(open_time_text)
-            close_time = parse_time(close_time_text)
-            op_hours_per_day[dow] = OperatingHours(open_time, close_time)
+        subsections = re.split(r'\s*,\s*', section)
+
+        for subsection in subsections:
+            for dow in parse_dow_text(subsection):
+                op_hours_per_day[dow] = OperatingHours(open_time, close_time)
 
     return op_hours_per_day
 
@@ -97,7 +94,7 @@ def parse_dow_text(section):
     firstBreak = section.split(",")
     for f in firstBreak:
         second_break = f.split("-")
-        start_dow = second_break[0].strip()
+        start_dow = second_break[0].strip()[0:3]
 
         if start_dow not in dow_full:
             continue
@@ -107,7 +104,7 @@ def parse_dow_text(section):
         if len(second_break) == 1:
             dow_list.append(f.strip())
         else:
-            end_dow = second_break[1].strip()
+            end_dow = second_break[1].strip()[0:3]
 
             if end_dow not in dow_full:
                 continue
