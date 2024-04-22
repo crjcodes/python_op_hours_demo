@@ -67,8 +67,8 @@ Containerize the above via Docker
 
 - ![Screenshot of successful query](result_success.png)
 - ![Screenshot of default response](result_default.png)
-- ![Screenshot of no results](result_no_result.png)
-- ![Screenshot of invalid datestamp](invalid_datestamp.png)
+- ![Screenshot of no results](result_no_results.png)
+- ![Screenshot of invalid datestamp](result_invalid_datestamp.png)
 
 ## Architecture/Design/Approach
 
